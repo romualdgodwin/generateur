@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Formulaire d'Inscription à un Événement</title>
+</head>
+<body>
+
+    
+    <form id="cv-form">
+        <div class="form-section">
+
+            <label for="avatar">Sélectionner un avatar :</label>
+            <input type="file" id="avatar" name="avatar" class="file-input" />
+            <h2>Informations de base</h2>
+            <div class="form-row">
+                <label for="name">Prenom:</label>
+                <input type="text" name="name" required placeholder="Exemple: James">
+            </div>
+            <div class="form-row">
+                <label for="prenom">Nom:</label>
+                <input type="text" name="prenom" required placeholder="Exemple: Lebron">
+            </div>
+            <div class="form-row">
+                <label for="address">Adresse:</label>
+                <input type="text" name="address" required placeholder="Exemple: 25 Street Mangala, Stains, 93240, Stains">
+            </div>
+            <div class="form-row">
+                <label for="phone">Téléphone:</label>
+                <input type="text" name="phone" required placeholder="Exemple: +33783972506">
+            </div>
+            <div class="form-row">
+                <label for="email">Email:</label>
+                <input type="email" name="email" required placeholder="Exemple: kobe.bryant@yahoo.com">
+            </div>
+        </div>
+
+
+
+        
+          
+
+        <!-- ... (autres balises head et body) ... -->
+
+<div class="form-section" id="work-experience-section">
+    <h2>EXPÉRIENCE DE TRAVAIL</h2>
+    <div class="form-row">
+        <label for="company">Nom de l'entreprise:</label>
+        <input type="text" name="company" required placeholder="Exemple: Aalam Software">
+    </div>
+    <div class="form-row">
+        <label for="job-title">Poste occupé:</label>
+        <input type="text" name="job-title" required placeholder="Exemple: Developer Back-End">
+    </div>
+    <div class="form-row">
+        <label for="start-date">Date de début:</label>
+        <input type="date" name="start-date" required>
+    </div>
+    <div class="form-row">
+        <label for="end-date">Date de fin:</label>
+        <input type="date" name="end-date" required>
+    </div>
+    <div class="form-row">
+        <label for="description">Description des tâches:</label>
+        <textarea name="job-description" required placeholder="Exemple: Réalisation d'un formulaire via Js"></textarea>
+    </div>
+
+    <div class="form-row">
+        <button type="button" onclick="addExperience()">Ajouter une expérience</button>
+    </div>
+</div>
+
+<div class="form-section" id="education-section">
+    <h2>FORMATION</h2>
+    <div class="form-row">
+        <label for="school">Nom de l'école:</label>
+        <input type="text" name="school" required placeholder="Exemple: ORT Montreuil">
+    </div>
+    <div class="form-row">
+        <label for="degree">Diplôme obtenu:</label>
+        <input type="text" name="degree" required placeholder="Exemple: BTS SIO (SLAM)">
+    </div>
+    <div class="form-row">
+        <label for="study-start-year">Année de début:</label>
+        <input type="date" name="study-start-year" required>
+    </div>
+    <div class="form-row">
+        <label for="study-end-year">Année de fin:</label>
+        <input type="date" name="study-end-year" required>
+    </div>
+    <div class="form-row">
+        <label for="field-of-study">Domaine d'étude:</label>
+        <input type="text" name="field-of-study" required placeholder="Exemple: Informatique">
+    </div>
+
+    <div class="form-row">
+        <button type="button" onclick="addFormation()">Ajouter une formation</button>
+    </div>
+</div>
+
+<div class="form-section">
+    <h2>Compétences</h2>
+    <div class="form-row">
+        <label for="skills">Entrez vos compétences, séparées par une virgule:</label>
+        <input type="text" name="skills"required placeholder="Exemple: C++, C, JAVA" >
+    </div>
+</div>
+
+
+
+<div class="form-section" id="language-section">
+    <h2>Langues</h2>
+    <div class="form-row">
+        <label for="language-name">Nom de la langue:</label>
+        <input type="text" name="language-name" required placeholder="Exemple: Français">
+    </div>
+    <div class="form-row">
+        <label for="language-level">Niveau de la langue:</label>
+        <select name="language-level" required>
+            <option value="Debutant">Débutant</option>
+            <option value="Intermediaire">Intermédiaire</option>
+            <option value="Avance">Avancé</option>
+            <!-- Ajoutez d'autres niveaux selon vos besoins -->
+        </select>
+    </div>
+</div>
+
+<div class="form-section" id="interests-section">
+    <h2>Centres d'intérêt</h2>
+    <div class="form-row">
+        <label for="interests">Entrez vos centres d'intérêt, séparés par une virgule:</label>
+        <input type="text" name="interests" required placeholder="Exemple: Musique, Lecture, Sport">
+    </div>
+</div>
+
+
+
+<!-- ... (autres balises du formulaire) ... -->
+
+
+<div class="action-buttons-container">
+    <button class="action-button" type="button" onclick="generateCV()">Générer mon CV</button>
+    <button class="action-button" type="button" onclick="printCV()">Imprimer</button>
+</div>
+
+
+<!-- Ajoutez ceci à l'endroit approprié dans votre formulaire -->
+<div class="form-section">
+    <h2>Choisir le modèle</h2>
+    <div class="form-row">
+        <label for="cv-model">Modèle de CV:</label>
+        <select name="cv-model" id="cv-model" required>
+            <option value="model1">Modèle 1</option>
+            <option value="model2">Modèle 2</option>
+            <option value="model3">Modèle 3</option>
+        </select>
+    </div>
+</div>
+
+
+
+    </form>
+
+    <!-- Ajoutez cette balise div à l'endroit où vous souhaitez afficher le CV -->
+    <div id="generated-cv-container"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
