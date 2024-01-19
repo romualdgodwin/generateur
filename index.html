@@ -8,12 +8,12 @@
 </head>
 <body>
 
-    
+    <div class="container">
+        <!-- Formulaire à gauche -->
+        <div class="left-side">
     <form id="cv-form">
         <div class="form-section">
 
-            <label for="avatar">Sélectionner un avatar :</label>
-            <input type="file" id="avatar" name="avatar" class="file-input" />
             <h2>Informations de base</h2>
             <div class="form-row">
                 <label for="name">Prenom:</label>
@@ -35,6 +35,7 @@
                 <label for="email">Email:</label>
                 <input type="email" name="email" required placeholder="Exemple: kobe.bryant@yahoo.com">
             </div>
+        
         </div>
 
 
@@ -137,9 +138,6 @@
 
 
 
-<!-- ... (autres balises du formulaire) ... -->
-
-
 <div class="action-buttons-container">
     <button class="action-button" type="button" onclick="generateCV()">Générer mon CV</button>
     <button class="action-button" type="button" onclick="printCV()">Imprimer</button>
@@ -162,9 +160,13 @@
 
 
     </form>
+    </div>
 
+<div class="right-side">
     <!-- Ajoutez cette balise div à l'endroit où vous souhaitez afficher le CV -->
     <div id="generated-cv-container"></div>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>

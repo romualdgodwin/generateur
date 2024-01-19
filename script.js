@@ -1,16 +1,16 @@
 document.getElementById('avatar').addEventListener('change', function () {
-    var preview = document.getElementById('avatar-preview');
-    var file = this.files[0];
+    var preview = document.getElementById('avatar-preview'); // Récupère l'élément HTML avec l'ID 'avatar'
+    var file = this.files[0]; // Initialise un objet FileReader
     var reader = new FileReader();
 
-    reader.onloadend = function () {
-      preview.src = reader.result;
+    reader.onloadend = function () { // Définit une fonction à exécuter une fois la lecture du fichier terminée
+      preview.src = reader.result; // Met à jour la source de l'élément img avec l'aperçu du fichier lu
     }
 
-    if (file) {
-      reader.readAsDataURL(file);
+    if (file) { //Vérifie si un fichier a été sélectionné
+      reader.readAsDataURL(file); // Démarre la lecture du contenu du fichier sous forme d'URL data
     } else {
-      preview.src = "";
+      preview.src = "";  // Réinitialise l'aperçu si aucun fichier n'est sélectionné
     }
   });
 
@@ -29,9 +29,9 @@ function printCV() {
     formSection.classList.remove('hidden-for-print');
 }
 
-function getValue(selector, context = document) {
-    const element = context.querySelector(selector);
-    return element ? element.value : '';
+function getValue(selector, context = document) {// Définit une fonction nommée getValue prenant deux paramètres : selector et context (par défaut égal à document).
+    const element = context.querySelector(selector);  // Sélectionne un élément dans le contexte donné en utilisant le sélecteur spécifié.
+    return element ? element.value : '';  // Retourne la valeur de l'élément s'il existe, sinon retourne une chaîne vide.
 }
 
 
@@ -43,24 +43,26 @@ function isValidName(value) {
 
 function isValidPhoneNumber(value) {
     // Utiliser une expression régulière pour vérifier si le numéro de téléphone contient uniquement des chiffres et peut commencer par un "+"
-    const phoneRegex = /^[+\d]+$/;
+    const phoneRegex = /^[+\d]+$/;  // ^ début de la chaine, $ fin d'une chaine, /d signifie 0 à 9
     return phoneRegex.test(value);
 }
 
 function isValidEmail(value) {
     // Utiliser une expression régulière pour vérifier si la valeur ressemble à une adresse e-mail
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(value);
+    return emailRegex.test(value); // 
 }
 
 
 function addExperience() {
     const experienceSection = document.getElementById('work-experience-section');
-    const clonedExperience = experienceSection.cloneNode(true);
+    const clonedExperience = experienceSection.cloneNode(true); //experienceSection est le nœud DOM que je souhaite cloner.
+    //.cloneNode(true) crée une copie (clone) de experienceSection ainsi que de tous ses éléments enfants, récursivement.
     
     // Réinitialisez les champs de la nouvelle expérience
-    const inputs = clonedExperience.querySelectorAll('input, textarea');
-    inputs.forEach(input => (input.value = ''));
+    const inputs = clonedExperience.querySelectorAll('input, textarea'); // Sélectionne tous les champs de saisie et zones de texte dans l'expérience clonée.
+inputs.forEach(input => (input.value = '')); // Parcourt chaque élément de la liste et affecte une chaîne vide à sa valeur.
+
 
     // Ajoutez le bouton de suppression
     const deleteButton = document.createElement('button');
@@ -118,230 +120,17 @@ function addFormation() {
 
 
 /*function generateCVModel2() {
-    // Utilisez ces informations pour générer le CV modèle 2
-    const cvContent = `
-    <head>
-    <title>Curriculum vitae</title>
-    <meta charset="utf-8">
-    <meta name="viewport"
-            content="width=device-width, initial-scale=1, user-scalable=no">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <head>
-        <title>Curriculum vitae</title>
-        <meta charset="utf-8">
-        <meta name="viewport"
-                content="width=device-width, initial-scale=1, user-scalable=no">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-      </head>
-    <body>  
-    <div class="cv-container">
-    <div class="left-column">
-      <img class="portait" src="https://www.codeur.com/tuto/wp-content/uploads/2022/01/MG_0110-4-293x300.jpg" />
-      <div class="section">
-        <p>
+    const cvContent = 
 
-        </p>
-      </div>
-      <div class="section">
-
-      </div>
-
-
-
-      
-      <div class="section">
-                <h2>COMPÉTENCES</h2>
-                <ul class="skills">
-                  <li><i class="icon fas fa-check-circle text-darkblue"></i> <strong>${skills}</strong></li>
-                </ul>
-              </div>
-
-
-
-
-              <div class="section">
-              <h2>Langues</h2>
-              <p>
-                  <strong>${languageName}</strong> - Niveau : ${languageLevel}
-              </p>
-          </div>
-
-
-
-            <div class="section">
-               <h2>Centres d'intérêt</h2>
-            <p>${interests}</p>
-            </div>
-          </div>
-
-    
-
-    <div class="right-column">
-        <div class="header">
-            <h1>${name} <span class="text-blue text-uppercase">${prenom} <span></h1>
-            <p>Full Stack Developper</p>
-            <ul class="infos">
-            <li><i class="icon fas fa-at text-blue"></i>${email}</li>
-            <li><i class="icon fas fa-phone text-blue"></i>${phone}</li>
-            <li><i class="icon fas fa-map-marker-alt text-blue"></i>${address}</li>
-        </ul>
-        </div>
-
-       
-        <div class="content">
-        <div class="section">
-            
-                <h2>Expériences <br><span class="text-blue">professionnelles</span></h2>
-                <p>
-                    <strong>${startDate} <i class="fas fa-long-arrow-alt-right"></i> ${endDate}</strong>
-                    <br>
-                    ${jobTitle} chez <em><strong>${company}</strong></em>
-                </p>
-                <ul class="experience-list">
-                    <li>${jobDescription}</li>
-                </ul>
-            </div>
-
-            <div class="section">      
-            </div>
-
-
-
-            <div class="section">
-                <h2>Études <br><span class="text-blue">& formations</span></h2>
-                <p>
-                    <strong>${studyStartYear} <i class="fas fa-long-arrow-alt-right"></i> ${studyEndYear}</strong>
-                    <br>
-                    <em>${degree}</em>, ${school}
-                </p>
-            </div>
-        </div>
-        </div>
-      
-    </div>
-    </body>
-    `;
     displayGeneratedCV(cvContent);
 }*/
 
- /*function generateCVModel3() {
-    // Utilisez ces informations pour générer le CV modèle 3
+ 
+
+
+/*function generateCVModel3() {
     const cvContent = `
-    <head>
-    <title>Curriculum vitae</title>
-    <meta charset="utf-8">
-    <meta name="viewport"
-            content="width=device-width, initial-scale=1, user-scalable=no">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <head>
-        <title>Curriculum vitae</title>
-        <meta charset="utf-8">
-        <meta name="viewport"
-                content="width=device-width, initial-scale=1, user-scalable=no">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-      </head>
-    <body>  
-    <div class="cv-container">
-    <div class="left-column">
-      <img class="portait" src="https://www.codeur.com/tuto/wp-content/uploads/2022/01/MG_0110-4-293x300.jpg" />
-      <div class="section">
-        <p>
-
-        </p>
-      </div>
-      <div class="section">
-
-      </div>
-
-
-
-      
-      <div class="section">
-                <h2>COMPÉTENCES</h2>
-                <ul class="skills">
-                  <li><i class="icon fas fa-check-circle text-darkblue"></i> <strong>${skills}</strong></li>
-                </ul>
-              </div>
-
-
-
-
-              <div class="section">
-              <h2>Langues</h2>
-              <p>
-                  <strong>${languageName}</strong> - Niveau : ${languageLevel}
-              </p>
-          </div>
-
-
-
-            <div class="section">
-               <h2>Centres d'intérêt</h2>
-            <p>${interests}</p>
-            </div>
-          </div>
-
-    
-
-    <div class="right-column">
-        <div class="header">
-            <h1>${name} <span class="text-blue text-uppercase">${prenom} <span></h1>
-            <p>Full Stack Developper</p>
-            <ul class="infos">
-            <li><i class="icon fas fa-at text-blue"></i>${email}</li>
-            <li><i class="icon fas fa-phone text-blue"></i>${phone}</li>
-            <li><i class="icon fas fa-map-marker-alt text-blue"></i>${address}</li>
-        </ul>
-        </div>
-
-       
-        <div class="content">
-        <div class="section">
-            
-                <h2>Expériences <br><span class="text-blue">professionnelles</span></h2>
-                <p>
-                    <strong>${startDate} <i class="fas fa-long-arrow-alt-right"></i> ${endDate}</strong>
-                    <br>
-                    ${jobTitle} chez <em><strong>${company}</strong></em>
-                </p>
-                <ul class="experience-list">
-                    <li>${jobDescription}</li>
-                </ul>
-            </div>
-
-            <div class="section">      
-            </div>
-
-
-
-            <div class="section">
-                <h2>Études <br><span class="text-blue">& formations</span></h2>
-                <p>
-                    <strong>${studyStartYear} <i class="fas fa-long-arrow-alt-right"></i> ${studyEndYear}</strong>
-                    <br>
-                    <em>${degree}</em>, ${school}
-                </p>
-            </div>
-        </div>
-        </div>
-      
-    </div>
-    </body>
-    `;
+   
     displayGeneratedCV(cvContent);*/
 
 
@@ -358,7 +147,7 @@ function generateCV() {
 
 
     // Vérifier si les champs de nom et prénom sont valides
-    if (!isValidName(name) || !isValidName(prenom)) {
+    if (!isValidName(name) || !isValidName(prenom)) {   // avec un point d'exclamation c'est true et sans c'est faux
         alert('Veuillez entrer un prénom et un nom valides.');
         return; // Arrêter la génération du CV si les noms ne sont pas valides
     }

@@ -237,3 +237,25 @@ select {
     height: 30px;
     padding: 5px;
   }
+
+
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1200px;
+    margin: 50px auto;
+  }
+  
+  .left-side {
+    padding: 30px;
+    background-color: #86ceab;
+    border: 1px solid #97d9bb;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .right-side {
+    padding: 30px;
+    background-color: #F2F2F2;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
