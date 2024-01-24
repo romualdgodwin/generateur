@@ -1,4 +1,4 @@
-document.getElementById('avatar').addEventListener('change', function () {
+/*document.getElementById('avatar').addEventListener('change', function () {
     var preview = document.getElementById('avatar-preview'); // Récupère l'élément HTML avec l'ID 'avatar'
     var file = this.files[0]; // Initialise un objet FileReader
     var reader = new FileReader();
@@ -12,7 +12,7 @@ document.getElementById('avatar').addEventListener('change', function () {
     } else {
       preview.src = "";  // Réinitialise l'aperçu si aucun fichier n'est sélectionné
     }
-  });
+  });*/
 
 
 
@@ -57,6 +57,7 @@ function isValidEmail(value) {
 function addExperience() {
     const experienceSection = document.getElementById('work-experience-section');
     const clonedExperience = experienceSection.cloneNode(true); //experienceSection est le nœud DOM que je souhaite cloner.
+    clonedExperience.classList.add('generated-experience'); // Ajouter une classe pour identifier les expériences générées dynamiquement
     //.cloneNode(true) crée une copie (clone) de experienceSection ainsi que de tous ses éléments enfants, récursivement.
     
     // Réinitialisez les champs de la nouvelle expérience
@@ -79,6 +80,7 @@ inputs.forEach(input => (input.value = '')); // Parcourt chaque élément de la 
 function addFormation() {
     const educationSection = document.getElementById('education-section');
     const clonedSection = educationSection.cloneNode(true);
+    clonedSection.classList.add('generated-formation'); // Ajouter une classe pour identifier les formations générées dynamiquement
     
     // Réinitialisez les champs de la nouvelle formation
     const inputs = clonedSection.querySelectorAll('input, textarea');
@@ -97,46 +99,12 @@ function addFormation() {
     educationSection.parentNode.insertBefore(clonedSection, educationSection.nextSibling);
 }
 
-/*function generateCV() {
+
+
+
+function generateCommonCVContent() {
     console.log('Début de la génération du CV');
-
-    const selectedModel = document.getElementById('cv-model').value;
-
-    // Sélectionnez la fonction en fonction du modèle choisi
-    switch (selectedModel) {
-        case 'model1':
-            generateCVModel1();
-            break;
-        case 'model2':
-            generateCVModel2();
-            break;
-        case 'model3':
-            generateCVModel3();
-            break;
-        default:
-            console.log('Modèle non reconnu');
-    }
-}*/
-
-
-/*function generateCVModel2() {
-    const cvContent = 
-
-    displayGeneratedCV(cvContent);
-}*/
-
- 
-
-
-/*function generateCVModel3() {
-    const cvContent = `
-   
-    displayGeneratedCV(cvContent);*/
-
-
-function generateCV() {
-    console.log('Début de la génération du CV');
-
+     // Cette fonction génère le contenu commun à tous les modèles de CV
     // Récupérer les informations du formulaire
     const name = getValue('input[name="name"]');
     const prenom = getValue('input[name="prenom"]');
@@ -192,7 +160,7 @@ function generateCV() {
     }
 
     // Utilisez ces informations pour générer le CV
-    const cvContent = `
+    const commonContent = `
     <head>
     <title>Curriculum vitae</title>
     <meta charset="utf-8">
@@ -263,16 +231,18 @@ function generateCV() {
             <p>Full Stack Developper</p>
             <ul class="infos">
             <li><i class="icon fas fa-at text-blue"></i>${email}</li>
+            <br>
             <li><i class="icon fas fa-phone text-blue"></i>${phone}</li>
+            <br>
             <li><i class="icon fas fa-map-marker-alt text-blue"></i>${address}</li>
         </ul>
         </div>
 
        
         <div class="content">
-        <div class="section">
+        <div class="section" id="work-experience-section">
             
-                <h2>Expériences <br><span class="text-blue">professionnelles</span></h2>
+                <h3> Experience professionnelles</span></h3>
                 <p>
                     <strong>${startDate} <i class="fas fa-long-arrow-alt-right"></i> ${endDate}</strong>
                     <br>
@@ -288,8 +258,8 @@ function generateCV() {
 
 
 
-            <div class="section">
-                <h2>Études <br><span class="text-blue">& formations</span></h2>
+            <div class="section" id="education-section">
+                <h3>Etudes & formations</span></h3>
                 <p>
                     <strong>${studyStartYear} <i class="fas fa-long-arrow-alt-right"></i> ${studyEndYear}</strong>
                     <br>
@@ -304,13 +274,91 @@ function generateCV() {
     `;
 
     console.log('CV généré');
+    return commonContent;
+}
 
-    // Affichez le CV généré (vous pouvez également l'envoyer vers un autre emplacement, par exemple, une fenêtre modale)
+
+function generateCVModel1() {
+    
+    // Générer le contenu spécifique au modèle 1
+    const model1Content = `
+        ${generateCommonCVContent()}
+    
+    `;
+
+    return model1Content;
+}
+
+function generateCVModel2() {
+   
+    // Générer le contenu spécifique au modèle 2
+    const model2Content = `
+        ${generateCommonCVContent()}
+        
+    `;
+
+    return model2Content;
+}
+
+function generateCVModel3() {
+   
+    // Générer le contenu spécifique au modèle 3
+    const model3Content = `
+        ${generateCommonCVContent()}
+        <!-- Ajoutez des éléments spécifiques au modèle 3 ici -->
+    `;
+
+    return model3Content;
+}
+
+function generateCV() {
+    // Récupérer la valeur du modèle de CV sélectionné
+    const selectedModel = document.getElementById('cv-model').value;
+
+    // Générer le CV en fonction du modèle sélectionné
+    let cvContent = '';
+
+    switch (selectedModel) {
+        case 'model1':
+            cvContent = generateCVModel1();
+            break;
+        case 'model2':
+            cvContent = generateCVModel2();
+            break;
+        case 'model3':
+            cvContent = generateCVModel3();
+            break;
+
+        default:
+            console.error('Modèle de CV non reconnu');
+            return;
+    }
+
+    // Affichez le CV généré
     const cvContainer = document.getElementById('generated-cv-container');
     if (cvContainer) {
         cvContainer.innerHTML = cvContent;
-        console.log('CV affiché');
+        cvContainer.className = `cv-container ${selectedModel}`; // Ajouter la classe du modèle sélectionné
+
+        // Ajouter les expériences professionnelles générées dynamiquement
+        const experienceSection = document.getElementById('work-experience-section');
+        const generatedExperiences = experienceSection.querySelectorAll('.generated-experience');
+        const experienceList = cvContainer.querySelector('.experience-list');
+
+        generatedExperiences.forEach((experience) => {
+            experienceList.appendChild(experience.cloneNode(true));
+        });
+
+        // Ajouter les formations générées dynamiquement
+        const educationSection = document.getElementById('education-section');
+        const generatedFormations = educationSection.querySelectorAll('.generated-formation');
+        const formationList = cvContainer.querySelector('.formation-list');
+
+        generatedFormations.forEach((formation) => {
+            formationList.appendChild(formation.cloneNode(true));
+        });
     } else {
-        console.log('Erreur: conteneur du CV non trouvé');
+        console.error('Erreur: conteneur du CV non trouvé');
     }
+    window.scrollTo(0, 0);
 }
