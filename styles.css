@@ -189,3 +189,20 @@ select {
   background-color: #7ee97e;
   color: #7a7a7a;
 }
+
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  #generated-cv-container, #generated-cv-container * {
+    visibility: visible;
+  }
+
+  #generated-cv-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}

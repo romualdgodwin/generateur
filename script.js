@@ -17,55 +17,52 @@
 
 
 
-function printCV() {
+
+
+
+  function printCV() {
     // Masquer la section du formulaire avant l'impression
     const formSection = document.getElementById('cv-form');
     formSection.classList.add('hidden-for-print');
-
+  
     // Utiliser window.print() pour ouvrir la boîte de dialogue d'impression
     window.print();
-
+  
     // Retirer la classe pour rétablir l'affichage normal
     formSection.classList.remove('hidden-for-print');
-}
-
-function getValue(selector, context = document) {// Définit une fonction nommée getValue prenant deux paramètres : selector et context (par défaut égal à document).
-    const element = context.querySelector(selector);  // Sélectionne un élément dans le contexte donné en utilisant le sélecteur spécifié.
-    return element ? element.value : '';  // Retourne la valeur de l'élément s'il existe, sinon retourne une chaîne vide.
-}
-
-
-function isValidName(value) {
-    // Utiliser une expression régulière pour vérifier si le nom/prénom contient seulement des lettres, espaces et tirets
-    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ-]+$/; // Accepte les lettres, espaces et tirets
+  }
+  
+  function getValue(selector, context = document) {
+    const element = context.querySelector(selector);
+    return element ? element.value : '';
+  }
+  
+  function isValidName(value) {
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ-]+$/;
     return nameRegex.test(value);
-}
-
-function isValidPhoneNumber(value) {
-    // Utiliser une expression régulière pour vérifier si le numéro de téléphone contient uniquement des chiffres et peut commencer par un "+"
-    const phoneRegex = /^[+\d]+$/;  // ^ début de la chaine, $ fin d'une chaine, /d signifie 0 à 9
+  }
+  
+  function isValidPhoneNumber(value) {
+    const phoneRegex = /^[+\d]+$/;
     return phoneRegex.test(value);
-}
-
-function isValidEmail(value) {
-    // Utiliser une expression régulière pour vérifier si la valeur ressemble à une adresse e-mail
+  }
+  
+  function isValidEmail(value) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(value); // 
-}
-
-
-function addExperience() {
+    return emailRegex.test(value);
+  }
+  
+  function addExperience() {
     const experienceSection = document.getElementById('work-experience-section');
-    const clonedExperience = experienceSection.cloneNode(true); //experienceSection est le nœud DOM que je souhaite cloner.
-    clonedExperience.classList.add('generated-experience'); // Ajouter une classe pour identifier les expériences générées dynamiquement
-    //.cloneNode(true) crée une copie (clone) de experienceSection ainsi que de tous ses éléments enfants, récursivement.
-    
-    // Réinitialisez les champs de la nouvelle expérience
-    const inputs = clonedExperience.querySelectorAll('input, textarea'); // Sélectionne tous les champs de saisie et zones de texte dans l'expérience clonée.
-inputs.forEach(input => (input.value = '')); // Parcourt chaque élément de la liste et affecte une chaîne vide à sa valeur.
-
-
-    // Ajoutez le bouton de suppression
+    const clonedExperience = experienceSection.cloneNode(true);
+    clonedExperience.classList.add('generated-experience');
+  
+    const inputs = clonedExperience.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+        input.value = '';
+        input.classList.add('experience-field');
+    });
+  
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
     deleteButton.textContent = 'Supprimer cette expérience';
@@ -73,20 +70,21 @@ inputs.forEach(input => (input.value = '')); // Parcourt chaque élément de la 
         this.parentElement.remove();
     };
     clonedExperience.appendChild(deleteButton);
-
+  
     experienceSection.parentNode.insertBefore(clonedExperience, experienceSection.nextSibling);
-}
-
-function addFormation() {
+  }
+  
+  function addFormation() {
     const educationSection = document.getElementById('education-section');
     const clonedSection = educationSection.cloneNode(true);
-    clonedSection.classList.add('generated-formation'); // Ajouter une classe pour identifier les formations générées dynamiquement
-    
-    // Réinitialisez les champs de la nouvelle formation
+    clonedSection.classList.add('generated-formation');
+  
     const inputs = clonedSection.querySelectorAll('input, textarea');
-    inputs.forEach(input => (input.value = ''));
-
-    // Ajoutez le bouton de suppression
+    inputs.forEach(input => {
+        input.value = '';
+        input.classList.add('formation-field');
+    });
+  
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
     deleteButton.textContent = 'Supprimer cette formation';
@@ -94,73 +92,107 @@ function addFormation() {
         this.parentElement.remove();
     };
     clonedSection.appendChild(deleteButton);
-
-    // Ajoutez la nouvelle section de formation après la section de formation existante
+  
     educationSection.parentNode.insertBefore(clonedSection, educationSection.nextSibling);
-}
-
-
-
-
-function generateCommonCVContent() {
+  }
+  
+  function generateCommonCVContent(selectedModel) {
     console.log('Début de la génération du CV');
-     // Cette fonction génère le contenu commun à tous les modèles de CV
-    // Récupérer les informations du formulaire
+  
     const name = getValue('input[name="name"]');
     const prenom = getValue('input[name="prenom"]');
     const address = getValue('input[name="address"]');
     const phone = getValue('input[name="phone"]');
     const email = getValue('input[name="email"]');
     const skills = getValue('input[name="skills"]');
-
-
-    // Vérifier si les champs de nom et prénom sont valides
-    if (!isValidName(name) || !isValidName(prenom)) {   // avec un point d'exclamation c'est true et sans c'est faux
+  
+    if (!isValidName(name) || !isValidName(prenom)) {
         alert('Veuillez entrer un prénom et un nom valides.');
-        return; // Arrêter la génération du CV si les noms ne sont pas valides
+        return;
     }
-
-    // Vérifier si le numéro de téléphone est valide
+  
     if (!isValidPhoneNumber(phone)) {
         alert('Veuillez entrer un numéro de téléphone valide (chiffres uniquement et éventuellement avec un + au début).');
-        return; // Arrêter la génération du CV si le numéro de téléphone n'est pas valide
+        return;
     }
-
-    // Vérifier si l'adresse e-mail est valide
+  
     if (!isValidEmail(email)) {
         alert('Veuillez entrer une adresse e-mail valide.');
-        return; // Arrêter la génération du CV si l'adresse e-mail n'est pas valide
+        return;
     }
-
-    // Récupérer les informations de l'expérience de travail
+  
     const company = getValue('input[name="company"]');
     const jobTitle = getValue('input[name="job-title"]');
     const startDate = getValue('input[name="start-date"]');
     const endDate = getValue('input[name="end-date"]');
     const jobDescription = getValue('textarea[name="job-description"]');
-
-    // Récupérer les informations de la formation
+  
+    const generatedExperiences = document.querySelectorAll('.generated-experience');
+    const experiencesContent = Array.from(generatedExperiences).map(experience => {
+        const jobTitle = experience.querySelector('input[name="job-title"]').value;
+        const startDate = experience.querySelector('input[name="start-date"]').value;
+        const endDate = experience.querySelector('input[name="end-date"]').value;
+        const jobDescription = experience.querySelector('textarea[name="job-description"]').value;
+        const company = experience.querySelector('input[name="company"]').value;
+  
+        return `
+            <p>
+                <strong>${startDate} <i class="fas fa-long-arrow-alt-right"></i> ${endDate}</strong>
+                <br>
+                ${jobTitle} chez <em><strong>${company}</strong></em>
+            </p>
+            <ul class="experience-list">
+                <li>${jobDescription}</li>
+            </ul>
+        `;
+    }).join('\n');
+  
+    console.log('Experience Information:');
+    console.log('Company:', company);
+    console.log('Job Title:', jobTitle);
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+    console.log('Job Description:', jobDescription);
+  
     const school = getValue('input[name="school"]');
     const degree = getValue('input[name="degree"]');
     const studyStartYear = getValue('input[name="study-start-year"]');
     const studyEndYear = getValue('input[name="study-end-year"]');
     const fieldOfStudy = getValue('input[name="field-of-study"]');
-
-    // Récupérer les informations de la langue
+  
+    console.log('Formation Information:');
+    console.log('School:', school);
+    console.log('Degree:', degree);
+    console.log('Study Start Year:', studyStartYear);
+    console.log('Study End Year:', studyEndYear);
+    console.log('Field of Study:', fieldOfStudy);
+  
+    const generatedFormations = document.querySelectorAll('.generated-formation');
+    const formationsContent = Array.from(generatedFormations).map(formation => {
+        const school = formation.querySelector('input[name="school"]').value;
+        const degree = formation.querySelector('input[name="degree"]').value;
+        const studyStartYear = formation.querySelector('input[name="study-start-year"]').value;
+        const studyEndYear = formation.querySelector('input[name="study-end-year"]').value;
+  
+        return `
+            <p>
+                <strong>${studyStartYear} <i class="fas fa-long-arrow-alt-right"></i> ${studyEndYear}</strong>
+                <br>
+                <em>${degree}</em>, ${school}
+            </p>
+        `;
+    }).join('\n');
+  
     const languageName = getValue('input[name="language-name"]');
     const languageLevel = getValue('select[name="language-level"]');
-
-    // Récupérer les informations des centres d'intérêt
     const interests = getValue('input[name="interests"]');
-
-    // Vérifier si tous les champs obligatoires sont remplis
+  
     if (!name || !prenom || !address || !phone || !email || !skills || !company || !jobTitle || !startDate || !endDate || !jobDescription || !school || !degree || !studyStartYear || !studyEndYear || !fieldOfStudy || !languageName || !languageLevel || !interests) {
         alert('Veuillez remplir tous les champs obligatoires.');
-        return; // Arrêter la génération du CV si des champs sont manquants
+        return;
     }
-
-    // Utilisez ces informations pour générer le CV
-    const commonContent = `
+  
+    const cvContent = `
     <head>
     <title>Curriculum vitae</title>
     <meta charset="utf-8">
@@ -185,18 +217,18 @@ function generateCommonCVContent() {
     <div class="cv-container">
     <div class="left-column">
     <img id="cv-avatar" class="portrait" src="https://www.codeur.com/tuto/wp-content/uploads/2022/01/MG_0110-4-293x300.jpg" />
-
+  
       <div class="section">
         <p>
-
+  
         </p>
       </div>
       <div class="section">
-
+  
       </div>
-
-
-
+  
+  
+  
       
       <div class="section">
                 <h2>COMPÉTENCES</h2>
@@ -204,27 +236,27 @@ function generateCommonCVContent() {
                   <li><i class="icon fas fa-check-circle text-darkblue"></i> <strong>${skills}</strong></li>
                 </ul>
               </div>
-
-
-
-
+  
+  
+  
+  
               <div class="section">
               <h2>Langues</h2>
               <p>
                   <strong>${languageName}</strong> - Niveau : ${languageLevel}
               </p>
           </div>
-
-
-
+  
+  
+  
             <div class="section">
                <h2>Centres d'intérêt</h2>
             <p>${interests}</p>
             </div>
           </div>
-
+  
     
-
+  
     <div class="right-column">
         <div class="header">
             <h1>${name} <span class="text-blue text-uppercase">${prenom} <span></h1>
@@ -237,7 +269,7 @@ function generateCommonCVContent() {
             <li><i class="icon fas fa-map-marker-alt text-blue"></i>${address}</li>
         </ul>
         </div>
-
+  
        
         <div class="content">
         <div class="section" id="work-experience-section">
@@ -251,13 +283,14 @@ function generateCommonCVContent() {
                 <ul class="experience-list">
                     <li>${jobDescription}</li>
                 </ul>
+                ${experiencesContent}
             </div>
-
+  
             <div class="section">      
             </div>
-
-
-
+  
+  
+  
             <div class="section" id="education-section">
                 <h3>Etudes & formations</span></h3>
                 <p>
@@ -265,6 +298,7 @@ function generateCommonCVContent() {
                     <br>
                     <em>${degree}</em>, ${school}
                 </p>
+                ${formationsContent}
             </div>
         </div>
         </div>
@@ -272,52 +306,31 @@ function generateCommonCVContent() {
     </div>
     </body>
     `;
-
+  
     console.log('CV généré');
-    return commonContent;
-}
-
-
-function generateCVModel1() {
-    
-    // Générer le contenu spécifique au modèle 1
-    const model1Content = `
-        ${generateCommonCVContent()}
-    
-    `;
-
+    return cvContent;
+  }
+  
+  function generateCVModel1() {
+    const model1Content = generateCommonCVContent('model1');
     return model1Content;
-}
-
-function generateCVModel2() {
-   
-    // Générer le contenu spécifique au modèle 2
-    const model2Content = `
-        ${generateCommonCVContent()}
-        
-    `;
-
+  }
+  
+  function generateCVModel2() {
+    const model2Content = generateCommonCVContent('model2');
     return model2Content;
-}
-
-function generateCVModel3() {
-   
-    // Générer le contenu spécifique au modèle 3
-    const model3Content = `
-        ${generateCommonCVContent()}
-        <!-- Ajoutez des éléments spécifiques au modèle 3 ici -->
-    `;
-
+  }
+  
+  function generateCVModel3() {
+    const model3Content = generateCommonCVContent('model3');
+    // Ajoutez des éléments spécifiques au modèle 3 ici (si nécessaire)
     return model3Content;
-}
-
-function generateCV() {
-    // Récupérer la valeur du modèle de CV sélectionné
+  }
+  
+  function generateCV() {
     const selectedModel = document.getElementById('cv-model').value;
-
-    // Générer le CV en fonction du modèle sélectionné
     let cvContent = '';
-
+  
     switch (selectedModel) {
         case 'model1':
             cvContent = generateCVModel1();
@@ -328,37 +341,21 @@ function generateCV() {
         case 'model3':
             cvContent = generateCVModel3();
             break;
-
         default:
             console.error('Modèle de CV non reconnu');
             return;
     }
-
-    // Affichez le CV généré
+  
+    console.log(cvContent);
+  
     const cvContainer = document.getElementById('generated-cv-container');
     if (cvContainer) {
         cvContainer.innerHTML = cvContent;
-        cvContainer.className = `cv-container ${selectedModel}`; // Ajouter la classe du modèle sélectionné
-
-        // Ajouter les expériences professionnelles générées dynamiquement
-        const experienceSection = document.getElementById('work-experience-section');
-        const generatedExperiences = experienceSection.querySelectorAll('.generated-experience');
-        const experienceList = cvContainer.querySelector('.experience-list');
-
-        generatedExperiences.forEach((experience) => {
-            experienceList.appendChild(experience.cloneNode(true));
-        });
-
-        // Ajouter les formations générées dynamiquement
-        const educationSection = document.getElementById('education-section');
-        const generatedFormations = educationSection.querySelectorAll('.generated-formation');
-        const formationList = cvContainer.querySelector('.formation-list');
-
-        generatedFormations.forEach((formation) => {
-            formationList.appendChild(formation.cloneNode(true));
-        });
+        cvContainer.className = `cv-container ${selectedModel}`;
     } else {
         console.error('Erreur: conteneur du CV non trouvé');
     }
+  
     window.scrollTo(0, 0);
-}
+  }
+  
